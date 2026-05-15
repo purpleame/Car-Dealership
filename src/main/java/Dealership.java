@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Predicate;
 
 public class Dealership {
     private String name;
@@ -31,48 +33,54 @@ public class Dealership {
     }
 
     public void getVehiclesByPrice(double min, double max) {
-        for (Vehicle car : inventory) {
-            if (car.getPrice() >= min && car.getPrice() <= max) {
-                System.out.println(car);
-            }
-        }
+        List<Vehicle> all = filterVehicles(car -> car.getPrice()
+                >= min && car.getPrice() <= max);
+        vehiclePrinter(all);
     }
 
     public void getVehiclesByMakeModel(String make, String model) {
-        for (Vehicle car : inventory) {
-            if (car.getMake() == make && car.getModel() == model) {
-                System.out.println(car);
-            }
-        }
+        List<Vehicle> all = filterVehicles(car -> car.getMake().equalsIgnoreCase(make)
+                && car.getModel().equalsIgnoreCase(model));
+        vehiclePrinter(all);
     }
 
     public void getVehiclesByYear(int min, int max) {
-        for (Vehicle car : inventory) {
-            if (car.getYear() >= min && car.getPrice() <= max) {
-                System.out.println(car);
-            }
-        }
+        List<Vehicle> all = filterVehicles(car -> car.getYear()
+                >= min && car.getYear() <= max);
+        vehiclePrinter(all);
     }
 
     public void getVehiclesByMiles(int min, int max) {
-        for (Vehicle car : inventory) {
-            if (car.getOdometer() >= min && car.getOdometer() <= max) {
-                System.out.println(car);
-            }
-        }
+        List<Vehicle> all = filterVehicles(car -> car.getOdometer()
+                >= min && car.getOdometer() <= max);
+        vehiclePrinter(all);
     }
 
     public void getVehiclesByColor(String color) {
-        for (Vehicle car : inventory) {
-            if (car.getColor() == color) {
-                System.out.println(car);
-            }
-        }
+        List<Vehicle> all = filterVehicles(car -> car.getColor().equalsIgnoreCase(color));
+        vehiclePrinter(all);
     }
 
     public void getAllVehicles() {
-        for (Vehicle car : inventory) {
-            System.out.println(car);
+        List<Vehicle> all = filterVehicles(car -> true);
+        vehiclePrinter(all);
+    }
+
+    public List<Vehicle> filterVehicles(Predicate<Vehicle> condition) {
+        List<Vehicle> results = new ArrayList<>();
+
+        for (Vehicle vehicle : inventory) {
+            if (condition.test(vehicle)) {
+                results.add(vehicle);
+            }
+        }
+
+        return results;
+    }
+
+    public void vehiclePrinter(List<Vehicle> all) {
+        for (Vehicle vehicle : all) {
+            System.out.println(vehicle);
         }
     }
 }

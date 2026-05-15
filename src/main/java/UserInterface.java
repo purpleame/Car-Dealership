@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class UserInterface {
@@ -33,8 +34,8 @@ public class UserInterface {
                 case 4 -> processGetByColorRequest();
                 case 5 -> processGetByMileageRequest();
                 case 6 -> processGetAllVehiclesRequest();
-                case 7 -> processAddVehicleRequest();
-                case 8 -> processRemoveVehicleRequest();
+                case 7 -> processAddVehicleRequest(dealership.getInventory());
+                case 8 -> processRemoveVehicleRequest(dealership.getInventory());
                 case 0 -> running = false;
                 default -> System.out.println("Invalid option.");
             }
@@ -80,16 +81,22 @@ public class UserInterface {
          dealership.getVehiclesByMiles(min, max);
     }
 
-    public void processGetAllVehiclesRequest() {
+    public void processGetAllVehiclesRequest() { dealership.getAllVehicles(); }
+
+    public void processAddVehicleRequest(ArrayList<Vehicle> inventory) {
+        System.out.println("Enter vehicle details (start with VIN):, Year, Make, Model, Type, Color, Miles, Price):");
+
 
     }
 
-    public void processAddVehicleRequest() {
-        System.out.println("Enter vehicle details (VIN, Year, Make, Model, Type, Color, Miles, Price):");
-    }
-
-    public void processRemoveVehicleRequest() {
+    public void processRemoveVehicleRequest(ArrayList<Vehicle> inventory) {
         System.out.print("Enter VIN of vehicle to remove: ");
-        String vin = scanner.nextLine();
+        int vin = scanner.nextInt();
+
+        for (Vehicle vehicle : inventory) {
+            if (vehicle.getVin() == vin) { inventory.remove(vehicle); }
+            System.out.println("Removed " + vehicle.getYear() + " " +
+                    vehicle.getMake() + " " + vehicle.getModel());
+        }
     }
 }
